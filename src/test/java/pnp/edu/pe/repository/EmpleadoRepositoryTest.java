@@ -2,6 +2,7 @@ package pnp.edu.pe.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +25,10 @@ public class EmpleadoRepositoryTest {
 	@BeforeEach
 	void setup() {
 		empleado = Empleado.builder()
-				.email("ealfriadez@gmail.com")
-				.nombre("Eleazar Alfredo")
-				.salario(1000)
+				.email("moka@gmail.com")
+				.nombre("moka")
+				.salario(500)
+				.hash("14587412365478")
 				.build();
 	}
 	
@@ -36,9 +38,10 @@ public class EmpleadoRepositoryTest {
 				
 		Empleado empleado1 = empleadoRepository.save(empleado);
 		
-		assertThat(empleado1.getEmail()).isEqualTo("ealfriadez@gmail.com");
-		assertThat(empleado1.getNombre()).isEqualTo("Eleazar Alfredo");
-		assertThat(empleado1.getSalario()).isEqualTo(1000);
+		assertThat(empleado1.getEmail()).isEqualTo("moka@gmail.com");
+		assertThat(empleado1.getNombre()).isEqualTo("moka");
+		assertThat(empleado1.getSalario()).isEqualTo(500);
+		assertThat(empleado1.getHash()).isEqualTo("14587412365478");
 		assertThat(empleado1.getId()).isGreaterThan(0);
 	}
 	
@@ -72,4 +75,29 @@ public class EmpleadoRepositoryTest {
 		assertThat(empleadoConsultado).isNotEmpty();
 		assertThat(empleadoEliminado).isEmpty();		
 	}
+	
+	//Java Guides
+	//Junit Test for saveEmployee	
+	@DisplayName("Test obtener empleado")
+	@Test
+	public void getEmployeeTest() {		
+		
+		Empleado empleado1 = empleadoRepository.save(empleado);
+		
+		Optional<Empleado> empleadoConsultado = empleadoRepository.findByEmail(empleado1.getEmail());
+		
+		assertThat(empleadoConsultado).isNotEmpty();
+	}
+	
+	@DisplayName("Test obtener todos los empleados")
+	@Test
+	public void getListOfEmployeeTest() {
+		
+		empleadoRepository.save(empleado);
+		
+		List<Empleado> empleados = empleadoRepository.findAll(); 
+		
+		assertThat(empleados.size()).isGreaterThan(0);
+	}
+	
 }
